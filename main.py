@@ -11,6 +11,7 @@ from pause_file import Pause
 from sprites_file import MazeSprites
 from sprites_file import VieSprites
 from modes_file import ModeController
+import inputbox
 
 class Game(object):
     def __init__(self):
@@ -235,7 +236,8 @@ class Game(object):
                     del scores[-1]
                     scores.insert(i, str(self.score) + "\n")
                     del noms[-1]
-                    noms.insert(i, input("Joli score ! Quel est votre nom ?") + "\n")
+                    nom_entre = inputbox.ask(self.screen, "Joli score ! Quel est votre nom ?")
+                    noms.insert(i, nom_entre + "\n")
                     break
 
             with open("score.txt", "w") as f:
