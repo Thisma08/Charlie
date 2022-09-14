@@ -23,11 +23,13 @@ class Game(object):
         self.score = 0
         self.font_name = pg.font.match_font(FONT_NAME)
         self.fruit = None
-        self.vies = 1
+        self.vies = 3
         self.level = 0
         self.pause = Pause(True)
         self.vieSprites = VieSprites(self.vies)
         self.fruitsAttrapes = []
+        self.intro = True
+        self.scoreBoard = False
         # with open('score.txt', 'r+') as f:
         #     self.highscore = f.read()
         # print(self.highscore)
@@ -114,6 +116,12 @@ class Game(object):
                             self.showCharacters()
                         else:
                             self.hideCharacters()
+                    if self.intro == True:
+                        self.intro = False
+                if event.key == pg.K_s:
+                    self.scoreBoard = not self.scoreBoard
+                    if not self.pause.paused:
+                        self.pause.switch()
 
 
     def checkNonosseEvents(self):
@@ -210,17 +218,14 @@ class Game(object):
             y = SCREEN_H - self.fruitsAttrapes[i].get_height() - 50
             self.screen.blit(self.fruitsAttrapes[i], (x, y))
 
-        # if self.score > int(self.highscore):
-        #     self.draw_text("NOUVEAU HIGHSCORE !", 30, WHITE, 400, 30)
+        if self.vies <= 0:
+            self.draw_text("GAME OVER !", 60, WHITE, SCREEN_W/2 + 25, SCREEN_H/2 - 100)
 
-        if self.pause.paused:
-            with open("score.txt", "r+") as s:
-                scores = s.readlines()
-            with open("noms.txt", "r+") as n:
-                noms = n.readlines()
-            self.draw_text("LES 5 MEILLEURS SCORES :", 30, WHITE, 1375, 40)
-            for i in range(len(scores)):
-                self.draw_text(" ".join([str(i+1), ":", str(scores[i].rstrip('\n')), "par", str(noms[i].rstrip('\n'))]), 30, WHITE, 1375, (i + 2) * 40)
+        if self.intro:
+            self.drawTitleScreen()
+
+        if self.scoreBoard:
+            self.drawScoreBoard()
 
         pg.display.update()
 
@@ -245,6 +250,26 @@ class Game(object):
             with open("noms.txt", "w") as f:
                 f.writelines(noms)
 
+    def drawTitleScreen(self):
+        pg.draw.rect(self.screen, GRASS_GREEN, (0, 0, SCREEN_W, SCREEN_H))
+        self.draw_text("Bienvenue dans", 60, WHITE, SCREEN_W / 2 + 25, SCREEN_H / 6)
+        self.draw_text("PAC-CHARLIE", 150, WHITE, SCREEN_W / 2 + 25, SCREEN_H / 4)
+        self.draw_text("Appuyez sur la barre d'espace pour commencer", 20, WHITE, SCREEN_W / 2 + 25, SCREEN_H - 400)
+        self.draw_text("Programmation : Mathis Mahaux - Dessins : Alice Musette", 20, (150, 150, 150), SCREEN_W / 2 + 25, SCREEN_H - 100)
+
+    def drawScoreBoard(self):
+        pg.draw.rect(self.screen, GRASS_GREEN, (0, 0, SCREEN_W, SCREEN_H))
+        self.draw_text("LES 10 MEILLEURS SCORES : ", 60, WHITE,
+                       SCREEN_W / 2 + 25, 50)
+
+        with open("score.txt", "r+") as s:
+            scores = s.readlines()
+        with open("noms.txt", "r+") as n:
+            noms = n.readlines()
+
+        for i in range(len(scores)):
+            self.draw_text(" ".join([str(i + 1), ":", str(scores[i].rstrip('\n')), "par", str(noms[i].rstrip('\n'))]),
+                           50, (200, 200, 200), SCREEN_W / 2 + 25, (i + 3) * 60)
 
 if __name__ == "__main__":
     game = Game()

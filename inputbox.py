@@ -22,7 +22,7 @@ def display_box(screen, message):
                     504, 34), 1)
   if len(message) != 0:
     screen.blit(fontobject.render(message, True, (255, 255, 255)),
-                ((screen.get_width() / 2) - 225, (screen.get_height() / 2) - 22))
+                ((screen.get_width() / 2) - 223, (screen.get_height() / 2) - 22))
   pygame.display.flip()
 
 def ask(screen, question):
