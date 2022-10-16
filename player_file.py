@@ -5,8 +5,11 @@ from constants_file import *
 from characters_file import Character
 from sprites_file import CharlieSprites
 
+
 class Player(Character):
     def __init__(self, inter):
+        pg.joystick.init()
+        self.joystick = pg.joystick.Joystick(0)
         Character.__init__(self, inter)
         self.name = PLAYER
         self.directions = {STOP: Vector2(), UP: Vector2(0, -1), DOWN: Vector2(0, 1), LEFT: Vector2(-1, 0),
@@ -31,6 +34,15 @@ class Player(Character):
         if key_pressed[K_LEFT]:
             return LEFT
         if key_pressed[K_RIGHT]:
+            return RIGHT
+
+        if self.joystick.get_button(11):
+            return UP
+        if self.joystick.get_button(12):
+            return DOWN
+        if self.joystick.get_button(13):
+            return LEFT
+        if self.joystick.get_button(14):
             return RIGHT
         return STOP
 
@@ -62,7 +74,7 @@ class Player(Character):
 
     def update(self, dt):
         self.sprites.update()
-        self.pos += self.directions[self.direction]*self.speed*dt
+        self.pos += self.directions[self.direction] * self.speed * dt
         direction = self.getValidKey()
         if self.overshotTarget():
             self.inter = self.target

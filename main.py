@@ -1,3 +1,4 @@
+from moviepy.editor import *
 import pygame as pg
 from pygame.locals import *
 from constants_file import *
@@ -12,18 +13,22 @@ from sprites_file import MazeSprites
 from sprites_file import VieSprites
 from modes_file import ModeController
 import inputbox
+import sys
 
 class Game(object):
     def __init__(self):
         pg.init()
+        pg.joystick.init()
+        self.joystick = pg.joystick.Joystick(0)
         self.screen = pg.display.set_mode(SCREEN, 0, 32)
         self.background = None
+        self.video = VideoFileClip("auRevoir.mp4")
         self.clock = pg.time.Clock()
         self.running = True
         self.score = 0
         self.font_name = pg.font.match_font(FONT_NAME)
         self.fruit = None
-        self.vies = 3
+        self.vies = 1
         self.level = 0
         self.pause = Pause(True)
         self.vieSprites = VieSprites(self.vies)
@@ -106,10 +111,9 @@ class Game(object):
         for event in pg.event.get():
             if event.type == pg.QUIT:
                 exit()
-            if event.type == pg.KEYDOWN:
-                if event.key == pg.K_ESCAPE:
-                    self.running = False
-                if event.key == pg.K_SPACE:
+
+            if event.type == pg.JOYBUTTONDOWN:
+                if event.button == 0:
                     if self.player.alive:
                         self.pause.setPause(playerPaused=True)
                         if not self.pause.paused:
@@ -118,10 +122,42 @@ class Game(object):
                             self.hideCharacters()
                     if self.intro == True:
                         self.intro = False
-                if event.key == pg.K_s:
+
+                if event.button == 6:
                     self.scoreBoard = not self.scoreBoard
                     if not self.pause.paused:
                         self.pause.switch()
+
+                if event.button == 5:
+                    #self.video.preview()
+                    self.running = False
+
+            #if event.type == pg.KEYDOWN:
+                #if event.key == pg.K_ESCAPE:
+                    #self.running = False
+                #if event.key == pg.K_SPACE:
+                    #if self.player.alive:
+                        #self.pause.setPause(playerPaused=True)
+                        #if not self.pause.paused:
+                            #self.showCharacters()
+                        #else:
+                            #self.hideCharacters()
+                    #if self.intro == True:
+                        #self.intro = False
+                #if event.key == pg.K_s:
+                    #self.scoreBoard = not self.scoreBoard
+                    #if not self.pause.paused:
+                        #self.pause.switch()
+
+            #if event.type == pg.JOYAXISMOTION:
+                #if event.axis == 0 and event.value > 0 and self.player.pos == self.player.inter.pos:
+                    #self.player.direction = RIGHT
+                #if event.axis == 0 and event.value < 0 and self.player.pos == self.player.inter.pos:
+                    #self.player.direction = LEFT
+                #if event.axis == 1 and event.value < 0 and self.player.pos == self.player.inter.pos:
+                    #self.player.direction = UP
+                #if event.axis == 1 and event.value > 0 and self.player.pos == self.player.inter.pos:
+                    #self.player.direction = DOWN
 
 
     def checkNonosseEvents(self):
@@ -156,6 +192,7 @@ class Game(object):
                         self.vieSprites.retirerImage()
                         self.player.die()
                         self.enemies.hide()
+                        self.fruit = None
                         if self.vies <= 0:
                             self.pause.setPause(pauseTime=3, func=self.restartGame)
                         else:
@@ -169,10 +206,10 @@ class Game(object):
             if self.player.collideCheck(self.fruit):
                 self.score += self.fruit.points
                 self.fruitsAttrapes.append(self.fruit.image)
-
                 self.fruit = None
             elif self.fruit.disappear:
                 self.fruit = None
+
 
     def nextLevel(self):
         self.showCharacters()
@@ -227,6 +264,9 @@ class Game(object):
         if self.scoreBoard:
             self.drawScoreBoard()
 
+        if self.nonosses.isEmpty():
+            self.draw_text("Bravo ! Vous passez au niveau " + str(self.level + 2) + " !", 60, WHITE, SCREEN_W/2 + 25, SCREEN_H/2 - 100)
+
         pg.display.update()
 
     def updateScoreBoard(self):
@@ -235,7 +275,7 @@ class Game(object):
         with open("noms.txt", "r+") as n:
             noms = n.readlines()
 
-        if self.score > int(scores[4]):
+        if self.score > int(scores[9]):
             for i in range(len(scores)):
                 if self.score > int(scores[i]):
                     del scores[-1]
@@ -243,6 +283,7 @@ class Game(object):
                     del noms[-1]
                     nom_entre = inputbox.ask(self.screen, "Joli score ! Quel est votre nom ?")
                     noms.insert(i, nom_entre + "\n")
+                    self.scoreBoard = True
                     break
 
             with open("score.txt", "w") as f:
