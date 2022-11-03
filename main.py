@@ -1,4 +1,3 @@
-from moviepy.editor import *
 import pygame as pg
 from pygame.locals import *
 from pygame import mixer
@@ -24,7 +23,6 @@ class Game(object):
         self.joystick = pg.joystick.Joystick(0)
         self.screen = pg.display.set_mode(SCREEN, 0, 32)
         self.background = None
-        self.video = VideoFileClip("auRevoir.mp4")
         self.clock = pg.time.Clock()
         self.running = True
         self.score = 0
@@ -138,7 +136,6 @@ class Game(object):
                         self.pause.switch()
 
                 if event.button == 5:
-                    #self.video.preview()
                     self.running = False
 
             #if event.type == pg.KEYDOWN:
@@ -330,5 +327,3 @@ if __name__ == "__main__":
     game.startGame()
     while game.running:
         game.update()
-
-#test
