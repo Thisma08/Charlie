@@ -1,5 +1,6 @@
 import pygame as pg
 from pygame.locals import *
+from pygame import mixer
 from constants_file import *
 from player_file import Player
 from intersections_file import InterGroup
@@ -18,6 +19,7 @@ class Game(object):
     def __init__(self):
         pg.init()
         pg.joystick.init()
+        mixer.init()
         self.joystick = pg.joystick.Joystick(0)
         self.screen = pg.display.set_mode(SCREEN, 0, 32)
         self.background = None
@@ -26,7 +28,7 @@ class Game(object):
         self.score = 0
         self.font_name = pg.font.match_font(FONT_NAME)
         self.fruit = None
-        self.vies = 1
+        self.vies = 3
         self.level = 0
         self.pause = Pause(True)
         self.vieSprites = VieSprites(self.vies)
@@ -36,6 +38,11 @@ class Game(object):
         # with open('score.txt', 'r+') as f:
         #     self.highscore = f.read()
         # print(self.highscore)
+        self.eatSound = mixer.Sound("eat.mp3")
+        self.selectSound = mixer.Sound("select.mp3")
+        self.powerUpSound = mixer.Sound("powerUp.mp3")
+        self.victorySound = mixer.Sound("victory.mp3")
+        self.deathSound = mixer.Sound("death.mp3")
 
     def setBackground(self):
         self.background = pg.surface.Surface(SCREEN).convert()
@@ -119,9 +126,11 @@ class Game(object):
                         else:
                             self.hideCharacters()
                     if self.intro == True:
+                        mixer.Sound.play(self.selectSound)
                         self.intro = False
 
                 if event.button == 6:
+                    mixer.Sound.play(self.selectSound)
                     self.scoreBoard = not self.scoreBoard
                     if not self.pause.paused:
                         self.pause.switch()
@@ -160,10 +169,12 @@ class Game(object):
     def checkNonosseEvents(self):
         nonosse = self.player.eatNonosses(self.nonosses.nonosseList)
         if nonosse:
+            mixer.Sound.play(self.eatSound)
             self.nonosses.numEaten += 1
             self.score += 10
             self.nonosses.nonosseList.remove(nonosse)
             if nonosse.name == S_NONOSSE:
+                mixer.Sound.play(self.powerUpSound)
                 self.enemies.startFreight()
             if self.nonosses.numEaten == 30:
                 self.enemies.enemy3.startInter.allowAccess(RIGHT, self.enemies.enemy3)
@@ -171,7 +182,8 @@ class Game(object):
                 self.enemies.enemy4.startInter.allowAccess(LEFT, self.enemies.enemy4)
             if self.nonosses.isEmpty():
                 self.hideCharacters()
-                self.pause.setPause(pauseTime=3, func=self.nextLevel)
+                mixer.Sound.play(self.victorySound)
+                self.pause.setPause(pauseTime=5, func=self.nextLevel)
 
     def checkEnemiesEvents(self):
         for enemy in self.enemies:
@@ -185,6 +197,7 @@ class Game(object):
                     self.score += enemy.points
                 elif enemy.mode.current is not SPAWN:
                     if self.player.alive:
+                        mixer.Sound.play(self.deathSound)
                         self.vies -= 1
                         self.vieSprites.retirerImage()
                         self.player.die()
@@ -314,6 +327,3 @@ if __name__ == "__main__":
     game.startGame()
     while game.running:
         game.update()
-
-
-        
