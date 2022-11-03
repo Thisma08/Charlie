@@ -1,10 +1,13 @@
 from constants_file import *
 from enemies_file import *
+from pygame import mixer
 
 class MainMode(object):
     def __init__(self):
         self.timer = 0
         self.scatter()
+        mixer.init()
+
 
     def update(self, dt):
         self.timer += dt
@@ -31,6 +34,7 @@ class ModeController(object):
         self.mainmode = MainMode()
         self.current = self.mainmode.mode
         self.entity = entity
+        self.powerDownSound = mixer.Sound("powerDown.mp3")
 
     def setFreightMode(self):
         if self.current in [SCATTER, CHASE]:
@@ -45,6 +49,7 @@ class ModeController(object):
         if self.current is FREIGHT:
             self.timer += dt
             if self.timer >= self.duration:
+                mixer.Sound.play(self.powerDownSound)
                 self.duration = None
                 self.entity.normalMode()
                 self.current = self.mainmode.mode
