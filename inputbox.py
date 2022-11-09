@@ -11,11 +11,11 @@ def get_key():
 
 def display_box(screen, message):
   "Print a message in a box in the middle of the screen"
+  fontobject = pygame.font.Font(None, 25)
   bg = pygame.Surface((2000, 1100))
   bg.set_alpha(128)
   bg.fill((255, 255, 255))
   screen.blit(bg, (0, 0))
-  fontobject = pygame.font.Font(None, 25)
   pygame.draw.rect(screen, (0, 0, 0),
                    ((screen.get_width() / 2) - 225,
                     (screen.get_height() / 2) - 28,

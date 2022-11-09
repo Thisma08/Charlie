@@ -13,6 +13,7 @@ from sprites_file import MazeSprites
 from sprites_file import VieSprites
 from modes_file import ModeController
 import inputbox
+import name
 import sys
 
 class Game(object):
@@ -28,7 +29,7 @@ class Game(object):
         self.score = 0
         self.font_name = pg.font.match_font(FONT_NAME)
         self.fruit = None
-        self.vies = 3
+        self.vies = 1
         self.level = 0
         self.pause = Pause(True)
         self.vieSprites = VieSprites(self.vies)
@@ -155,17 +156,6 @@ class Game(object):
                     #if not self.pause.paused:
                         #self.pause.switch()
 
-            #if event.type == pg.JOYAXISMOTION:
-                #if event.axis == 0 and event.value > 0 and self.player.pos == self.player.inter.pos:
-                    #self.player.direction = RIGHT
-                #if event.axis == 0 and event.value < 0 and self.player.pos == self.player.inter.pos:
-                    #self.player.direction = LEFT
-                #if event.axis == 1 and event.value < 0 and self.player.pos == self.player.inter.pos:
-                    #self.player.direction = UP
-                #if event.axis == 1 and event.value > 0 and self.player.pos == self.player.inter.pos:
-                    #self.player.direction = DOWN
-
-
     def checkNonosseEvents(self):
         nonosse = self.player.eatNonosses(self.nonosses.nonosseList)
         if nonosse:
@@ -291,7 +281,8 @@ class Game(object):
                     del scores[-1]
                     scores.insert(i, str(self.score) + "\n")
                     del noms[-1]
-                    nom_entre = inputbox.ask(self.screen, "Joli score ! Quel est votre nom ?")
+                    nom_entre = name.ask(self.screen)
+                    # nom_entre = inputbox.ask(self.screen, "Question")
                     noms.insert(i, nom_entre + "\n")
                     self.scoreBoard = True
                     break
