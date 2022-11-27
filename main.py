@@ -11,17 +11,19 @@ from fruit_file import Fruit
 from pause_file import Pause
 from sprites_file import MazeSprites
 from sprites_file import VieSprites
+from sprites_file import Spritesheet
 from modes_file import ModeController
 import inputbox
 import name
 import sys
+import math
 
 class Game(object):
     def __init__(self):
         pg.init()
         pg.joystick.init()
         mixer.init()
-        self.joystick = pg.joystick.Joystick(0)
+        # self.joystick = pg.joystick.Joystick(0)
         self.screen = pg.display.set_mode(SCREEN, 0, 32)
         self.background = None
         self.clock = pg.time.Clock()
@@ -29,7 +31,7 @@ class Game(object):
         self.score = 0
         self.font_name = pg.font.match_font(FONT_NAME)
         self.fruit = None
-        self.vies = 1
+        self.vies = 3
         self.level = 0
         self.pause = Pause(True)
         self.vieSprites = VieSprites(self.vies)
@@ -44,6 +46,34 @@ class Game(object):
         self.powerUpSound = mixer.Sound("powerUp.mp3")
         self.victorySound = mixer.Sound("victory.mp3")
         self.deathSound = mixer.Sound("death.mp3")
+        self.titreY = SCREEN_W / 4
+        self.bienvenueY = SCREEN_W / 6
+        self.x = 0
+        self.spritesheet = Spritesheet()
+        self.charlieMenuImg = pg.image.load('CharlieMenu.png')
+        self.charlieMenuImg_x = -150
+        self.charlieMenuImg_y = 600
+        self.charlieMenuImg_vit = 10
+
+        self.marcMenuImg = pg.image.load('MarcMenu.png')
+        self.marcMenuImg_x = -350
+        self.marcMenuImg_y = 600
+        self.marcMenuImg_vit = 10
+
+        self.claireMenuImg = pg.image.load('ClaireMenu.png')
+        self.claireMenuImg_x = -500
+        self.claireMenuImg_y = 600
+        self.claireMenuImg_vit = 10
+
+        self.aliceMenuImg = pg.image.load('AliceMenu.png')
+        self.aliceMenuImg_x = -650
+        self.aliceMenuImg_y = 600
+        self.aliceMenuImg_vit = 10
+
+        self.mathisMenuImg = pg.image.load('MathisMenu.png')
+        self.mathisMenuImg_x = -800
+        self.mathisMenuImg_y = 600
+        self.mathisMenuImg_vit = 10
 
     def setBackground(self):
         self.background = pg.surface.Surface(SCREEN).convert()
@@ -118,8 +148,31 @@ class Game(object):
             if event.type == pg.QUIT:
                 exit()
 
-            if event.type == pg.JOYBUTTONDOWN:
-                if event.button == 0:
+            # if event.type == pg.JOYBUTTONDOWN:
+            #     if event.button == 0:
+            #         if self.player.alive:
+            #             self.pause.setPause(playerPaused=True)
+            #             if not self.pause.paused:
+            #                 self.showCharacters()
+            #             else:
+            #                 self.hideCharacters()
+            #         if self.intro == True:
+            #             mixer.Sound.play(self.selectSound)
+            #             self.intro = False
+            #
+            #     if event.button == 6:
+            #         mixer.Sound.play(self.selectSound)
+            #         self.scoreBoard = not self.scoreBoard
+            #         if not self.pause.paused:
+            #             self.pause.switch()
+            #
+            #     if event.button == 5:
+            #         self.running = False
+
+            if event.type == pg.KEYDOWN:
+                if event.key == pg.K_ESCAPE:
+                    self.running = False
+                if event.key == pg.K_SPACE:
                     if self.player.alive:
                         self.pause.setPause(playerPaused=True)
                         if not self.pause.paused:
@@ -127,34 +180,11 @@ class Game(object):
                         else:
                             self.hideCharacters()
                     if self.intro == True:
-                        mixer.Sound.play(self.selectSound)
                         self.intro = False
-
-                if event.button == 6:
-                    mixer.Sound.play(self.selectSound)
+                if event.key == pg.K_s:
                     self.scoreBoard = not self.scoreBoard
                     if not self.pause.paused:
                         self.pause.switch()
-
-                if event.button == 5:
-                    self.running = False
-
-            #if event.type == pg.KEYDOWN:
-                #if event.key == pg.K_ESCAPE:
-                    #self.running = False
-                #if event.key == pg.K_SPACE:
-                    #if self.player.alive:
-                        #self.pause.setPause(playerPaused=True)
-                        #if not self.pause.paused:
-                            #self.showCharacters()
-                        #else:
-                            #self.hideCharacters()
-                    #if self.intro == True:
-                        #self.intro = False
-                #if event.key == pg.K_s:
-                    #self.scoreBoard = not self.scoreBoard
-                    #if not self.pause.paused:
-                        #self.pause.switch()
 
     def checkNonosseEvents(self):
         nonosse = self.player.eatNonosses(self.nonosses.nonosseList)
@@ -294,10 +324,58 @@ class Game(object):
 
     def drawTitleScreen(self):
         pg.draw.rect(self.screen, GRASS_GREEN, (0, 0, SCREEN_W, SCREEN_H))
-        self.draw_text("Bienvenue dans", 60, WHITE, SCREEN_W / 2 + 25, SCREEN_H / 6)
-        self.draw_text("PAC-CHARLIE", 150, WHITE, SCREEN_W / 2 + 25, SCREEN_H / 4)
-        self.draw_text("Appuyez sur la barre d'espace pour commencer", 20, WHITE, SCREEN_W / 2 + 25, SCREEN_H - 400)
+        self.titreY = SCREEN_H / 4 + 40 * math.sin(self.x)
+        self.bienvenueY = SCREEN_H / 6 + 40 * math.sin(self.x)
+        self.x -= 0.05
+        self.draw_text("Bienvenue dans", 60, WHITE, SCREEN_W / 2 + 25, self.bienvenueY)
+        self.draw_text("PAC-CHARLIE", 150, BLACK, SCREEN_W / 2 + 20, self.titreY + 20)
+        self.draw_text("PAC-CHARLIE", 150, WHITE, SCREEN_W / 2, self.titreY)
+        self.draw_text("Appuyez sur le bouton X pour commencer", 20, WHITE, SCREEN_W / 2 + 25, SCREEN_H - 400)
         self.draw_text("Programmation : Mathis Mahaux - Dessins : Alice Musette", 20, (150, 150, 150), SCREEN_W / 2 + 25, SCREEN_H - 100)
+        if self.charlieMenuImg_x < -800:
+            self.charlieMenuImg = pg.transform.flip(self.charlieMenuImg, True, False)
+            self.charlieMenuImg_vit = 10
+        if self.charlieMenuImg_x > SCREEN_W + 800:
+            self.charlieMenuImg = pg.transform.flip(self.charlieMenuImg, True, False)
+            self.charlieMenuImg_vit = -10
+        self.charlieMenuImg_x += self.charlieMenuImg_vit
+        self.screen.blit(self.charlieMenuImg, (self.charlieMenuImg_x, self.charlieMenuImg_y))
+
+        if self.marcMenuImg_x < -800:
+            self.marcMenuImg = pg.transform.flip(self.marcMenuImg, True, False)
+            self.marcMenuImg_vit = 10
+        if self.marcMenuImg_x > SCREEN_W + 800:
+            self.marcMenuImg = pg.transform.flip(self.marcMenuImg, True, False)
+            self.marcMenuImg_vit = -10
+        self.marcMenuImg_x += self.marcMenuImg_vit
+        self.screen.blit(self.marcMenuImg, (self.marcMenuImg_x, self.marcMenuImg_y))
+
+        if self.claireMenuImg_x < -800:
+            self.claireMenuImg = pg.transform.flip(self.claireMenuImg, True, False)
+            self.claireMenuImg_vit = 10
+        if self.claireMenuImg_x > SCREEN_W + 800:
+            self.claireMenuImg = pg.transform.flip(self.claireMenuImg, True, False)
+            self.claireMenuImg_vit = -10
+        self.claireMenuImg_x += self.claireMenuImg_vit
+        self.screen.blit(self.claireMenuImg, (self.claireMenuImg_x, self.claireMenuImg_y))
+
+        if self.aliceMenuImg_x < -800:
+            self.aliceMenuImg = pg.transform.flip(self.aliceMenuImg, True, False)
+            self.aliceMenuImg_vit = 10
+        if self.aliceMenuImg_x > SCREEN_W + 800:
+            self.aliceMenuImg = pg.transform.flip(self.aliceMenuImg, True, False)
+            self.aliceMenuImg_vit = -10
+        self.aliceMenuImg_x += self.aliceMenuImg_vit
+        self.screen.blit(self.aliceMenuImg, (self.aliceMenuImg_x, self.aliceMenuImg_y))
+
+        if self.mathisMenuImg_x < -800:
+            self.mathisMenuImg = pg.transform.flip(self.mathisMenuImg, True, False)
+            self.mathisMenuImg_vit = 10
+        if self.mathisMenuImg_x > SCREEN_W + 800:
+            self.mathisMenuImg = pg.transform.flip(self.mathisMenuImg, True, False)
+            self.mathisMenuImg_vit = -10
+        self.mathisMenuImg_x += self.mathisMenuImg_vit
+        self.screen.blit(self.mathisMenuImg, (self.mathisMenuImg_x, self.mathisMenuImg_y))
 
     def drawScoreBoard(self):
         pg.draw.rect(self.screen, GRASS_GREEN, (0, 0, SCREEN_W, SCREEN_H))
