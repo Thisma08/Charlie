@@ -52,24 +52,175 @@ def ask(ecran):
     lettre3_rect.center = (SCREEN_W // 2 + 80, SCREEN_H // 2)
     ecran.blit(lettre3_a, lettre3_rect)
 
-    joystick = pygame.joystick.Joystick(0)
+    # joystick = pygame.joystick.Joystick(0)
 
     while True:
         for event in pygame.event.get():
-            if event.type == pygame.JOYBUTTONDOWN:
-                if joystick.get_button(13):
+            # if event.type == pygame.JOYBUTTONDOWN:
+            #     if joystick.get_button(13):
+            #         if lettre_mod > 1:
+            #             lettre_mod -= 1
+            #         else:
+            #             lettre_mod = 1
+            #
+            #     if joystick.get_button(14):
+            #         if lettre_mod < 3:
+            #             lettre_mod += 1
+            #         else:
+            #             lettre_mod = 3
+            #
+            #     if joystick.get_button(11):
+            #         if lettre_mod == 1:
+            #             i1 += 1
+            #             if i1 < 26:
+            #                 lettre1 = lettres[i1]
+            #                 lettre1_a = font.render(lettre1, False, WHITE)
+            #                 lettre1_rect = lettre1_a.get_rect()
+            #                 lettre1_rect.center = (SCREEN_W // 2 - 80, SCREEN_H // 2)
+            #                 ecran.blit(inputbox_surf, inputbox_rect)
+            #                 ecran.blit(lettre1_a, lettre1_rect)
+            #                 ecran.blit(lettre2_a, lettre2_rect)
+            #                 ecran.blit(lettre3_a, lettre3_rect)
+            #             else:
+            #                 i1 = 0
+            #                 lettre1 = lettres[i1]
+            #                 lettre1_a = font.render(lettre1, False, WHITE)
+            #                 lettre1_rect = lettre1_a.get_rect()
+            #                 lettre1_rect.center = (SCREEN_W // 2 - 80, SCREEN_H // 2)
+            #                 ecran.blit(inputbox_surf, inputbox_rect)
+            #                 ecran.blit(lettre1_a, lettre1_rect)
+            #                 ecran.blit(lettre2_a, lettre2_rect)
+            #                 ecran.blit(lettre3_a, lettre3_rect)
+            #
+            #         elif lettre_mod == 2:
+            #             i2 += 1
+            #             if i2 < 26:
+            #                 lettre2 = lettres[i2]
+            #                 lettre2_a = font.render(lettre2, False, WHITE)
+            #                 lettre2_rect = lettre2_a.get_rect()
+            #                 lettre2_rect.center = (SCREEN_W // 2, SCREEN_H // 2)
+            #                 ecran.blit(inputbox_surf, inputbox_rect)
+            #                 ecran.blit(lettre1_a, lettre1_rect)
+            #                 ecran.blit(lettre2_a, lettre2_rect)
+            #                 ecran.blit(lettre3_a, lettre3_rect)
+            #             else:
+            #                 i2 = 0
+            #                 lettre2 = lettres[i2]
+            #                 lettre2_a = font.render(lettre2, False, WHITE)
+            #                 lettre2_rect = lettre2_a.get_rect()
+            #                 lettre2_rect.center = (SCREEN_W // 2, SCREEN_H // 2)
+            #                 ecran.blit(inputbox_surf, inputbox_rect)
+            #                 ecran.blit(lettre1_a, lettre1_rect)
+            #                 ecran.blit(lettre2_a, lettre2_rect)
+            #                 ecran.blit(lettre3_a, lettre3_rect)
+            #
+            #         elif lettre_mod == 3:
+            #             i3 += 1
+            #             if i3 < 26:
+            #                 lettre3 = lettres[i3]
+            #                 lettre3_a = font.render(lettre3, False, WHITE)
+            #                 lettre3_rect = lettre3_a.get_rect()
+            #                 lettre3_rect.center = (SCREEN_W // 2 + 80, SCREEN_H // 2)
+            #                 ecran.blit(inputbox_surf, inputbox_rect)
+            #                 ecran.blit(lettre1_a, lettre1_rect)
+            #                 ecran.blit(lettre2_a, lettre2_rect)
+            #                 ecran.blit(lettre3_a, lettre3_rect)
+            #             else:
+            #                 i3 = 0
+            #                 lettre3 = lettres[i3]
+            #                 lettre3_a = font.render(lettre3, False, WHITE)
+            #                 lettre3_rect = lettre3_a.get_rect()
+            #                 lettre3_rect.center = (SCREEN_W // 2 + 80, SCREEN_H // 2)
+            #                 ecran.blit(inputbox_surf, inputbox_rect)
+            #                 ecran.blit(lettre1_a, lettre1_rect)
+            #                 ecran.blit(lettre2_a, lettre2_rect)
+            #                 ecran.blit(lettre3_a, lettre3_rect)
+            #
+            #     if joystick.get_button(12):
+            #         if lettre_mod == 1:
+            #             i1 -= 1
+            #             if i1 >= 0:
+            #                 lettre1 = lettres[i1]
+            #                 lettre1_a = font.render(lettre1, False, WHITE)
+            #                 lettre1_rect = lettre1_a.get_rect()
+            #                 lettre1_rect.center = (SCREEN_W // 2 - 80, SCREEN_H // 2)
+            #                 ecran.blit(inputbox_surf, inputbox_rect)
+            #                 ecran.blit(lettre1_a, lettre1_rect)
+            #                 ecran.blit(lettre2_a, lettre2_rect)
+            #                 ecran.blit(lettre3_a, lettre3_rect)
+            #             else:
+            #                 i1 = 25
+            #                 lettre1 = lettres[i1]
+            #                 lettre1_a = font.render(lettre1, False, WHITE)
+            #                 lettre1_rect = lettre1_a.get_rect()
+            #                 lettre1_rect.center = (SCREEN_W // 2 - 80, SCREEN_H // 2)
+            #                 ecran.blit(inputbox_surf, inputbox_rect)
+            #                 ecran.blit(lettre1_a, lettre1_rect)
+            #                 ecran.blit(lettre2_a, lettre2_rect)
+            #                 ecran.blit(lettre3_a, lettre3_rect)
+            #
+            #         elif lettre_mod == 2:
+            #             i2 -= 1
+            #             if i2 >= 0:
+            #                 lettre2 = lettres[i2]
+            #                 lettre2_a = font.render(lettre2, False, WHITE)
+            #                 lettre2_rect = lettre2_a.get_rect()
+            #                 lettre2_rect.center = (SCREEN_W // 2, SCREEN_H // 2)
+            #                 ecran.blit(inputbox_surf, inputbox_rect)
+            #                 ecran.blit(lettre1_a, lettre1_rect)
+            #                 ecran.blit(lettre2_a, lettre2_rect)
+            #                 ecran.blit(lettre3_a, lettre3_rect)
+            #             else:
+            #                 i2 = 25
+            #                 lettre2 = lettres[i2]
+            #                 lettre2_a = font.render(lettre2, False, WHITE)
+            #                 lettre2_rect = lettre2_a.get_rect()
+            #                 lettre2_rect.center = (SCREEN_W // 2, SCREEN_H // 2)
+            #                 ecran.blit(inputbox_surf, inputbox_rect)
+            #                 ecran.blit(lettre1_a, lettre1_rect)
+            #                 ecran.blit(lettre2_a, lettre2_rect)
+            #                 ecran.blit(lettre3_a, lettre3_rect)
+            #
+            #         elif lettre_mod == 3:
+            #             i3 -= 1
+            #             if i3 >= 0:
+            #                 lettre3 = lettres[i3]
+            #                 lettre3_a = font.render(lettre3, False, WHITE)
+            #                 lettre3_rect = lettre3_a.get_rect()
+            #                 lettre3_rect.center = (SCREEN_W // 2 + 80, SCREEN_H // 2)
+            #                 ecran.blit(inputbox_surf, inputbox_rect)
+            #                 ecran.blit(lettre1_a, lettre1_rect)
+            #                 ecran.blit(lettre2_a, lettre2_rect)
+            #                 ecran.blit(lettre3_a, lettre3_rect)
+            #             else:
+            #                 i3 = 25
+            #                 lettre3 = lettres[i3]
+            #                 lettre3_a = font.render(lettre3, False, WHITE)
+            #                 lettre3_rect = lettre3_a.get_rect()
+            #                 lettre3_rect.center = (SCREEN_W // 2 + 80, SCREEN_H // 2)
+            #                 ecran.blit(inputbox_surf, inputbox_rect)
+            #                 ecran.blit(lettre1_a, lettre1_rect)
+            #                 ecran.blit(lettre2_a, lettre2_rect)
+            #                 ecran.blit(lettre3_a, lettre3_rect)
+            #
+            #     if joystick.get_button(15):
+            #         nom = lettre1 + lettre2 + lettre3
+            #         return nom
+
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_LEFT:
                     if lettre_mod > 1:
                         lettre_mod -= 1
                     else:
                         lettre_mod = 1
 
-                if joystick.get_button(14):
+                if event.key == pygame.K_RIGHT:
                     if lettre_mod < 3:
                         lettre_mod += 1
                     else:
                         lettre_mod = 3
 
-                if joystick.get_button(11):
+                if event.key == pygame.K_UP:
                     if lettre_mod == 1:
                         i1 += 1
                         if i1 < 26:
@@ -136,7 +287,7 @@ def ask(ecran):
                             ecran.blit(lettre2_a, lettre2_rect)
                             ecran.blit(lettre3_a, lettre3_rect)
 
-                if joystick.get_button(12):
+                if event.key == pygame.K_DOWN:
                     if lettre_mod == 1:
                         i1 -= 1
                         if i1 >= 0:
@@ -203,7 +354,7 @@ def ask(ecran):
                             ecran.blit(lettre2_a, lettre2_rect)
                             ecran.blit(lettre3_a, lettre3_rect)
 
-                if joystick.get_button(15):
+                if event.key == pygame.K_RETURN:
                     nom = lettre1 + lettre2 + lettre3
                     return nom
 

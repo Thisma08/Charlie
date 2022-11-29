@@ -31,7 +31,7 @@ class Game(object):
         self.score = 0
         self.font_name = pg.font.match_font(FONT_NAME)
         self.fruit = None
-        self.vies = 3
+        self.vies = 1
         self.level = 0
         self.pause = Pause(True)
         self.vieSprites = VieSprites(self.vies)
