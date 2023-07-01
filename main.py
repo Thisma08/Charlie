@@ -43,9 +43,11 @@ class Game(object):
         # print(self.highscore)
         self.eatSound = mixer.Sound("eat.mp3")
         self.selectSound = mixer.Sound("select.mp3")
-        self.powerUpSound = mixer.Sound("powerUp.mp3")
+        self.powerUpSound = mixer.Sound("woof.mp3")
         self.victorySound = mixer.Sound("victory.mp3")
         self.deathSound = mixer.Sound("death.mp3")
+        self.gameMusic = mixer.Sound("musiqueJeu.mp3")
+        self.menuMusic = mixer.Sound("musiqueMenu.mp3")
         self.titreY = SCREEN_W / 4
         self.bienvenueY = SCREEN_W / 6
         self.x = 0
@@ -101,6 +103,10 @@ class Game(object):
         self.enemies.enemy4.startInter.denyAccess(LEFT, self.enemies.enemy4)
         self.mazesprites = MazeSprites("maze1.txt", "maze1_rotation.txt")
         self.background = self.mazesprites.constructBackground(self.background, self.level % 5)
+        self.gameMusic.set_volume(0.0)
+        self.gameMusic.play(loops=-1)
+        self.menuMusic.set_volume(0.1)
+        self.menuMusic.play(loops=-1)
 
     def restartGame(self):
         self.vies = 3
@@ -181,6 +187,7 @@ class Game(object):
                             self.hideCharacters()
                     if self.intro == True:
                         self.intro = False
+
                 if event.key == pg.K_s:
                     self.scoreBoard = not self.scoreBoard
                     if not self.pause.paused:
@@ -202,6 +209,7 @@ class Game(object):
                 self.enemies.enemy4.startInter.allowAccess(LEFT, self.enemies.enemy4)
             if self.nonosses.isEmpty():
                 self.hideCharacters()
+                self.gameMusic.stop()
                 mixer.Sound.play(self.victorySound)
                 self.pause.setPause(pauseTime=5, func=self.nextLevel)
 
@@ -240,14 +248,12 @@ class Game(object):
             elif self.fruit.disappear:
                 self.fruit = None
 
-
     def nextLevel(self):
         self.showCharacters()
         self.level += 1
         self.pause.paused = True
         self.startGame()
         self.enemies.increaseSpeed()
-
 
     def draw_text(self, text, size, color, x, y):
         font = pg.font.Font(self.font_name, size)
@@ -289,9 +295,17 @@ class Game(object):
             self.draw_text("GAME OVER !", 60, WHITE, SCREEN_W/2 + 25, SCREEN_H/2 - 100)
 
         if self.intro:
+            self.menuMusic.set_volume(0.1)
+            self.gameMusic.set_volume(0.0)
             self.drawTitleScreen()
+        else:
+            self.menuMusic.set_volume(0.0)
+            self.gameMusic.set_volume(0.1)
+
 
         if self.scoreBoard:
+            self.menuMusic.set_volume(0.1)
+            self.gameMusic.set_volume(0.0)
             self.drawScoreBoard()
 
         if self.nonosses.isEmpty():

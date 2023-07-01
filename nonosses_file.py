@@ -13,7 +13,7 @@ class Nonosse(object):
         self.collideRadius = int(2 * TILE_W / 16)
         self.points = 10
         self.visible = True
-        self.image = pg.image.load("C:\\Users\Mathis\Desktop\Projets Python\Charlie\croquette.png")
+        self.image = pg.image.load("C:\\Users\Sam\PycharmProjects\Charlie\croquette.png")
 
     def render(self, screen):
         if self.visible:
@@ -30,7 +30,7 @@ class SuperNonosse(Nonosse):
         self.points = 50
         self.flashTime = 0.1
         self.timer = 0
-        self.image = pg.image.load("C:\\Users\Mathis\Desktop\Projets Python\Charlie\os.png").convert_alpha()
+        self.image = pg.image.load("C:\\Users\Sam\PycharmProjects\Charlie\os.png").convert_alpha()
         self.image.set_colorkey(BLACK)
 
 

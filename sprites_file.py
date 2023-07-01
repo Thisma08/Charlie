@@ -7,7 +7,7 @@ BASETILEHEIGHT = 16
 
 class Spritesheet(object):
     def __init__(self):
-        self.sheet = pg.image.load("C:\\Users\Mathis\Desktop\Projets Python\Charlie\spritesheet.png").convert_alpha()
+        self.sheet = pg.image.load("C:\\Users\Sam\PycharmProjects\Charlie\spritesheet.png").convert_alpha()
         transcolor = self.sheet.get_at((0, 0))
         self.sheet.set_colorkey(transcolor)
         width = int(self.sheet.get_width() / BASETILEWIDTH * TILE_W)
